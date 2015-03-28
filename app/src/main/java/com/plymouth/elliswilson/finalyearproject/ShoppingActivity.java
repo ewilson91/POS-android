@@ -61,21 +61,45 @@ public class ShoppingActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+        String type = null;
+        switch(position) {
+
+
+            case 0:
+                type = "none";
+                break;
+            case 1:
+                type = "Carpet";
+                break;
+            case 2:
+                type = "Vinyl";
+                break;
+            default:
+                break;
+
+
+        }
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1,type))
                 .commit();
     }
+
+
+
 
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.shopping_cart);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.carpet);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.vinyl);
                 break;
         }
     }
@@ -125,15 +149,19 @@ public class ShoppingActivity extends ActionBarActivity
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String STRING_KEY = "stringKey";
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+
+
+        public static PlaceholderFragment newInstance(int sectionNumber, String stringKey) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(STRING_KEY, stringKey);
             fragment.setArguments(args);
             return fragment;
         }
@@ -145,6 +173,13 @@ public class ShoppingActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_shopping, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            String section = String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER));
+
+//            Toast.makeText(getActivity(),section ,Toast.LENGTH_SHORT).show();
+            GetRequest getRequest = new GetRequest(textView,getArguments().getString(STRING_KEY));
+            getRequest.execute("http://elliswilson.byethost7.com/get-all.php");
+
             return rootView;
         }
 
