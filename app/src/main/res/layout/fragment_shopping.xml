@@ -8,6 +8,12 @@
 
     <TextView android:id="@+id/section_label" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Some Crap" />
+        android:text="Some Crap"
+        android:visibility="gone"/>
+
+    <ListView android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/mainListView">
+    </ListView>
 
 </RelativeLayout>

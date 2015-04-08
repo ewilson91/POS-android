@@ -1,7 +1,5 @@
 package com.plymouth.elliswilson.finalyearproject;
 
-
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -10,24 +8,58 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.database.Cursor;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.plymouth.elliswilson.finalyearproject.models.Element;
+import com.plymouth.elliswilson.finalyearproject.models.Products;
+
+import java.util.List;
 
 public class GetRequest extends AsyncTask<String, Integer, String> {
 
-    private final TextView view;
+    private final ListView view;
     private final String type;
+    private final Activity activity;
 
-    public GetRequest(TextView view, String type) {
+    public GetRequest(ListView view, String type, Activity activity) {
         this.view = view;
         this.type = type;
+        this.activity = activity;
     }
 
     @Override
     protected void onPostExecute(String result) {
 
-        String filter = filterData(result);
-        getView().setText(filter);
+        final String filter = filterData(result);
+        final Products products = new Products(filter);
+
+        if(products.isEmpty()) {
+            return;
+        }
+
+
+//            getView().setText(products.getList().get(0).getString(Element.UUID));
+        List<String> list = products.getStringList(Element.NAME);
+        ArrayAdapter<String> listAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_row, list);
+
+        getView().setAdapter(listAdapter);
+
+        getView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String company = products.getList().get(position).getString(Element.COMPANY);
+                Toast.makeText(getActivity(), company, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         super.onPostExecute(result);
     }
 
@@ -56,7 +88,7 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject json = array.getJSONObject(i);
 
-                if(json.getString("Type").equals(getType())) {
+                if(json.getString(Element.TYPE).equals(getType())) {
                     out.put(json);
                 }
             }
@@ -69,11 +101,15 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
         return out.toString();
     }
 
-    public TextView getView() {
+    public ListView getView() {
         return view;
     }
 
     public String getType() {
         return type;
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }

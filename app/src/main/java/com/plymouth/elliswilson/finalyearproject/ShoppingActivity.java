@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -173,11 +174,13 @@ public class ShoppingActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_shopping, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            ListView listView = (ListView) rootView.findViewById(R.id.mainListView);
+
             String section = String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER));
 
 //            Toast.makeText(getActivity(),section ,Toast.LENGTH_SHORT).show();
-            GetRequest getRequest = new GetRequest(textView,getArguments().getString(STRING_KEY));
+            GetRequest getRequest = new GetRequest(listView,getArguments().getString(STRING_KEY), getActivity());
             getRequest.execute("http://elliswilson.byethost7.com/get-all.php");
 
             return rootView;
