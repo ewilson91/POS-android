@@ -55,7 +55,7 @@ public class ShoppingActivity extends ActionBarActivity
 
                 Bundle bundle = getIntent().getExtras();
                 String surname = bundle.getString(SURNAME_KEY);
-                Toast.makeText(this, surname,Toast.LENGTH_LONG).show();
+                Toast.makeText(this, surname,Toast.LENGTH_SHORT).show();
     }
 
     @Override

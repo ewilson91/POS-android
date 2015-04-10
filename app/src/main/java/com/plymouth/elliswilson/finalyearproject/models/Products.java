@@ -42,6 +42,10 @@ public class Products {
         return list;
     }
 
+    public String getElemFromIndex(String key, int index) {
+        return getList().get(index).getString(key);
+    }
+
     public List<Object> getValueList(String key) {
         List<Object> list = new ArrayList<>();
 

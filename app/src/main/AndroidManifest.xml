@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.plymouth.elliswilson.finalyearproject" >
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,6 +21,10 @@
         <activity
             android:name=".ShoppingActivity"
             android:label="@string/title_activity_shopping" >
+        </activity>
+        <activity
+            android:name=".ProductDetailActivity"
+            android:label="@string/title_activity_product_detail" >
         </activity>
     </application>
 

@@ -1,7 +1,7 @@
 package com.plymouth.elliswilson.finalyearproject;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,20 +9,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.os.Build;
+
+import com.plymouth.elliswilson.finalyearproject.models.Element;
 
 
-public class StartActivity extends ActionBarActivity {
+/****
+ * name
+ * colour
+ * width
+ * length
+ * price
+ */
+
+public class ProductDetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_product_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new StartFragment())
+                    .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
     }
@@ -31,7 +39,7 @@ public class StartActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_start, menu);
+        getMenuInflater().inflate(R.menu.menu_product_detail, menu);
         return true;
     }
 
@@ -53,35 +61,23 @@ public class StartActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class StartFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment {
 
-        public StartFragment() {
+        public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_start, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_product_detail, container, false);
 
-            final EditText editText = (EditText) rootView.findViewById(R.id.CustomerName);
-            Button button = (Button) rootView.findViewById(R.id.StartScreenNext);
+            Bundle bundle = getActivity().getIntent().getExtras();
+            String name = bundle.getString(Element.NAME);
+            String colour = bundle.getString(Element.COLOUR);
+            String width = bundle.getString(Element.WIDTH);
+            String length = bundle.getString(Element.LENGTH);
+            String price = bundle.getString(Element.PRICE);
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (editText.getText().length() > 0){
-                        Intent intent = new Intent(getActivity(),ShoppingActivity.class);
-                        intent.putExtra(ShoppingActivity.SURNAME_KEY, editText.getText().toString());
-                        startActivity(intent);
-
-                    }
-                    else{
-                        Toast.makeText(getActivity(), "Please Enter In A Customer Name",Toast.LENGTH_SHORT).show();
-
-                    }
-//
-                }
-            });
 
             return rootView;
         }

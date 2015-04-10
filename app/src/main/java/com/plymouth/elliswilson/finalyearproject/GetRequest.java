@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.view.View;
@@ -57,6 +58,17 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String company = products.getList().get(position).getString(Element.COMPANY);
                 Toast.makeText(getActivity(), company, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(),ProductDetailActivity.class);
+                intent.putExtra(Element.NAME, products.getElemFromIndex(Element.NAME, position));
+                intent.putExtra(Element.COLOUR, products.getElemFromIndex(Element.COLOUR, position));
+                intent.putExtra(Element.WIDTH, products.getElemFromIndex(Element.WIDTH, position));
+                intent.putExtra(Element.LENGTH, products.getElemFromIndex(Element.LENGTH, position));
+                intent.putExtra(Element.PRICE, products.getElemFromIndex(Element.PRICE, position));
+
+                getActivity().startActivity(intent);
+
+
             }
         });
 
