@@ -57,15 +57,16 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String company = products.getList().get(position).getString(Element.COMPANY);
+                String name = products.getElemFromIndex(Element.NAME,position);
                 Toast.makeText(getActivity(), company, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getActivity(),ProductDetailActivity.class);
-                intent.putExtra(Element.NAME, products.getElemFromIndex(Element.NAME, position));
+                intent.putExtra(Element.NAME, name);
                 intent.putExtra(Element.COLOUR, products.getElemFromIndex(Element.COLOUR, position));
                 intent.putExtra(Element.WIDTH, products.getElemFromIndex(Element.WIDTH, position));
                 intent.putExtra(Element.LENGTH, products.getElemFromIndex(Element.LENGTH, position));
                 intent.putExtra(Element.PRICE, products.getElemFromIndex(Element.PRICE, position));
-
+                intent.putExtra(Products.CURRENT_SELECTION, products.serialiseFromKey(Element.NAME,name));
                 getActivity().startActivity(intent);
 
 

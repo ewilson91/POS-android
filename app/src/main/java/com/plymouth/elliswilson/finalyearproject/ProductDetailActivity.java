@@ -1,5 +1,7 @@
 package com.plymouth.elliswilson.finalyearproject;
 
+import android.content.ClipData;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -10,8 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.plymouth.elliswilson.finalyearproject.models.Element;
+import com.plymouth.elliswilson.finalyearproject.models.Products;
+
+import java.util.List;
 
 
 /****
@@ -63,6 +76,7 @@ public class ProductDetailActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+
         public PlaceholderFragment() {
         }
 
@@ -72,14 +86,58 @@ public class ProductDetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_product_detail, container, false);
 
             Bundle bundle = getActivity().getIntent().getExtras();
-            String name = bundle.getString(Element.NAME);
+            final String name = bundle.getString(Element.NAME);
             String colour = bundle.getString(Element.COLOUR);
             String width = bundle.getString(Element.WIDTH);
             String length = bundle.getString(Element.LENGTH);
             String price = bundle.getString(Element.PRICE);
+            final String current = bundle.getString(Products.CURRENT_SELECTION);
+            final String selectedWidth;
+
+
+            final TextView stockTitle = (TextView) rootView.findViewById(R.id.stockTitle);
+            final TextView stockPrice = (TextView) rootView.findViewById(R.id.stockPrice);
+            final Spinner widthSelect = (Spinner) rootView.findViewById(R.id.spinner);
+            final Spinner colourSelect = (Spinner) rootView.findViewById(R.id.colourSelect);
+            final EditText lengthSelect = (EditText) rootView.findViewById(R.id.lengthSelect);
+            final TextView remainingQuantity = (TextView) rootView.findViewById(R.id.remainingQuantity);
+            final TextView currentPrice = (TextView) rootView.findViewById(R.id.currentPrice);
+            Button addToShoppingCart = (Button) rootView.findViewById(R.id.addToShoppingCart);
+            Toast.makeText(getActivity(), bundle.getString(Products.CURRENT_SELECTION), Toast.LENGTH_LONG).show();
+
+            final Products products = new Products(current);
+            List<String> widthList = products.filterFromKey(Element.NAME, name , Element.WIDTH);
+            widthSelect.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, widthList));
+            selectedWidth = widthSelect.getSelectedItem().toString();
+
+            widthSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    List<String> colourList = products.filterFromKey(Element.WIDTH, selectedWidth, Element.COLOUR);
+                    colourSelect.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colourList));                   }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+
+               });
+
+
+
+
+
+
+            stockTitle.setText(name);
+            stockPrice.setText("£" + price);
+            lengthSelect.getText();
+            remainingQuantity.setText(length);
+
+
 
 
             return rootView;
         }
     }
+
 }

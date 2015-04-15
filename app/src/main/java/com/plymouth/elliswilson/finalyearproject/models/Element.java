@@ -22,7 +22,10 @@ public class Element {
 
     private final HashMap<String, Object> map;
 
+    private final JSONObject raw;
+
     public Element(JSONObject raw) throws JSONException {
+        this.raw = raw;
         this.map = parseJson(raw);
     }
 
@@ -53,11 +56,11 @@ public class Element {
         return (String) get(key);
     }
 
-    public double getDouble(String key) {
-        return (double) get(key);
-    }
-
     public HashMap<String, Object> getMap() {
         return map;
+    }
+
+    public JSONObject getRaw() {
+        return raw;
     }
 }
