@@ -24,7 +24,10 @@ import android.widget.Toast;
 import com.plymouth.elliswilson.finalyearproject.models.Element;
 import com.plymouth.elliswilson.finalyearproject.models.Products;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /****
@@ -74,6 +77,8 @@ public class ProductDetailActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
+
+
     public static class PlaceholderFragment extends Fragment {
 
 
@@ -106,22 +111,25 @@ public class ProductDetailActivity extends ActionBarActivity {
             Toast.makeText(getActivity(), bundle.getString(Products.CURRENT_SELECTION), Toast.LENGTH_LONG).show();
 
             final Products products = new Products(current);
-            List<String> widthList = products.filterFromKey(Element.NAME, name , Element.WIDTH);
+            final List<String> widthList = products.filterFromKey(Element.NAME, name , Element.WIDTH);
             widthSelect.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, widthList));
             selectedWidth = widthSelect.getSelectedItem().toString();
+
+
 
             widthSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    List<String> colourList = products.filterFromKey(Element.WIDTH, selectedWidth, Element.COLOUR);
-                    colourSelect.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colourList));                   }
-
+                    String selected = widthList.get(position);
+                    List<String> colourList = products.filterFromKey(Element.WIDTH, selected, Element.COLOUR);
+                    colourSelect.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colourList));
+                }
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
                     // your code here
                 }
+            });
 
-               });
 
 
 

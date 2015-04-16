@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.plymouth.elliswilson.finalyearproject.models.Element;
 import com.plymouth.elliswilson.finalyearproject.models.Products;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class GetRequest extends AsyncTask<String, Integer, String> {
 
@@ -49,7 +51,8 @@ public class GetRequest extends AsyncTask<String, Integer, String> {
 
 //            getView().setText(products.getList().get(0).getString(Element.UUID));
         List<String> list = products.getStringList(Element.NAME);
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_row, list);
+        ArrayAdapter listAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_row, list);
+
 
         getView().setAdapter(listAdapter);
 

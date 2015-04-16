@@ -4,7 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Products {
 
@@ -34,13 +36,13 @@ public class Products {
     }
 
     public List<String> getStringList(String key) {
-        List<String> list = new ArrayList<>();
+        Set<String> list = new HashSet<>();
 
         for (Element element : getList()) {
             list.add(element.getString(key));
         }
 
-        return list;
+        return new ArrayList<>(list);
     }
 
     public String getElemFromIndex(String key, int index) {
@@ -82,15 +84,13 @@ public class Products {
      * @return List to populate the next drop box
      */
     public List<String> filterFromKey(String key, String value, String ret) {
-        List<String> list = new ArrayList<>();
-
+        Set<String> list = new HashSet<>();
         for (Element element : getList()) {
             if(element.getString(key).equals(value)) {
                 list.add(element.getString(ret));
             }
         }
-
-        return list;
+        return new ArrayList<>(list);
     }
     public int getSize() {
         return list.size();
